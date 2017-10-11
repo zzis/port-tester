@@ -1,0 +1,9 @@
+{
+  "serverIP": "localhost",
+  "ports": [
+    "8888", 
+    "10000-10010"
+  ],
+  "_comment": "timeout unit is second",
+  "timeOut": "10"
+}}}
