@@ -8,5 +8,5 @@ Before you run the tester, please make sure there is at least one port opened to
 
 
 You need copy the project to both server & client sides  
-As for client side, run command `.\node socket_client.js server-ip port-to-test`  
-As for server side, just run `.\node socket_server.js`  
+As for client side, run command `.\node client.js server-ip port-to-test`  
+As for server side, just run `.\node server.js`  
