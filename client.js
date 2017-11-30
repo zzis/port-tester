@@ -7,10 +7,14 @@ var serverIp = config.serverIp;
 var portsToTest = config.portsToTest;
 
 function main(){
+  if(process.argv.length != 4 || process.argv.length != 2){
+    console.log('usage: node socket_client ip port will read test port from input');
+    console.log('------ node socket_client.js will read test ports from configuration');
+    return;
+  }
   if(process.argv.length == 4){
     serverIp = process.argv[2];
     portsToTest = [process.argv[3]];
-  //  console.log('usage: node socket_client ip port');
   }
   connectServerPort(serverIp, serverPort, portsToTest); 
 }
