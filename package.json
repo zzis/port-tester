@@ -1,0 +1,8 @@
+{
+  "name": "port-tester",
+  "author": "zz",
+  "dependencies": {
+    "colors": "^1.1.2"
+  },
+  "devDependencies": {}
+}

@@ -1,9 +1,9 @@
 {
-  "servicePort": "30000",
+  "servicePort": "8888",
   "ports": [
     "8888", 
     "10000-10010"
   ],
-  "_comment": "timeout unit is second",
-  "timeOut": "10"
+  "_comment": "timeout unit is msecond",
+  "timeout": 3000
 }
