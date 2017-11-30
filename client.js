@@ -2,16 +2,17 @@ const net = require('net');
 const config = require('./config');
 const colors = require('colors');
 
-var serverPort = config.servicePort;
+var serverPort = config.serverPort;
+var serverIp = config.serverIp;
+var portsToTest = config.portsToTest;
 
 function main(){
-  if(process.argv.length != 4){
-    console.log('usage: node socket_client ip port');
-    return;
+  if(process.argv.length == 4){
+    serverIp = process.argv[2];
+    portsToTest = [process.argv[3]];
+  //  console.log('usage: node socket_client ip port');
   }
-  var ip = process.argv[2];
-  var portToTest = process.argv[3];
-  connectServerPort(ip, serverPort, ['11111', '22222']);
+  connectServerPort(serverIp, serverPort, portsToTest); 
 }
 
 function connectServerPort(ip, port, portsToTest){
@@ -48,7 +49,7 @@ function connectServerPort(ip, port, portsToTest){
   
   client.on('error', (err) => {
     console.log(colors.red.underline('Connect server port error', err.message));
-    console.log('port', port.red, 'on host', ip.yellow, 'connect falied');
+    console.log('port', colors.red(port), 'on host', ip.yellow, 'connect falied');
     client.destroy();
   });
 }

@@ -2,7 +2,7 @@ const net = require('net');
 const config = require('./config');
 const colors = require('colors');
 
-var serverPort = config.servicePort;
+var serverPort = config.serverPort;
 
 function start(){
   var server = net.createServer((socket) => {

@@ -1,8 +1,10 @@
 {
-  "servicePort": "8888",
-  "ports": [
-    "8888", 
-    "10000-10010"
+  "serverPort": 8888,
+  "serverIp": "localhost",
+  "portsToTest": [
+    "4324",
+    "4235",
+    "33213"
   ],
   "_comment": "timeout unit is msecond",
   "timeout": 3000
