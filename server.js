@@ -9,9 +9,10 @@ function start(){
     socket.name = socket.remoteAddress + ":" + socket.remotePort;
     socket.on('data', (data) => {
       // console.log("remote connected" + socket.name);
+      // console.log(data.toString('utf8'));
       portToTest = data.toString('utf8');
-      listenTestPort(portToTest);
       socket.write("established");
+      listenTestPort(portToTest); 
     });
   });
   server.listen(serverPort, () => {
