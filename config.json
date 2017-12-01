@@ -4,7 +4,8 @@
   "portsToTest": [
     "4324",
     "4235",
-    "33213"
+    "33213",
+    "10000-10100"
   ],
   "_comment": "timeout unit is msecond",
   "timeout": 3000

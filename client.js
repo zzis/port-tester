@@ -7,7 +7,8 @@ var serverIp = config.serverIp;
 var portsToTest = config.portsToTest;
 
 function main(){
-  if(process.argv.length != 4 || process.argv.length != 2){
+  console.log(colors.red(process.argv.length));
+  if(!(process.argv.length != 4 | process.argv.length != 2)){
     console.log('usage: node socket_client ip port will read test port from input');
     console.log('------ node socket_client.js will read test ports from configuration');
     return;
@@ -16,7 +17,40 @@ function main(){
     serverIp = process.argv[2];
     portsToTest = [process.argv[3]];
   }
-  connectServerPort(serverIp, serverPort, portsToTest); 
+  var portsToTestFinal = [];
+  if(process.argv.length == 2){
+    for(var port of portsToTest){
+      if(port.includes('-')){
+        var newPorts = getPortsFromString(port);        
+        portsToTestFinal = portsToTestFinal.concat(newPorts);
+      } else {
+        portsToTestFinal.push(port);
+      }
+    }
+  }
+  connectServerPort(serverIp, serverPort, portsToTestFinal); 
+}
+
+function getPortsFromString(stringToConvert){
+  var tmp = stringToConvert.split('-');
+  var start = Number.parseInt(tmp[0]);
+  var end = Number.parseInt(tmp[1]);
+  var ports = [];
+  if(start > end){
+    var foo = start;
+    start = end;
+    end = foo;
+  }
+  if(start > 65536){
+    return ports;
+  }
+  if(isNaN(start) || isNaN(end)){
+    return ports;
+  }
+  for(let i = start; i < end; i++){
+    ports.push(i + '');
+  }
+  return ports;
 }
 
 function connectServerPort(ip, port, portsToTest){
