@@ -7,46 +7,55 @@ var serverIp = config.serverIp;
 var portsToTest = config.portsToTest;
 
 function main(){
-  console.log(colors.red(process.argv.length));
   if(!(process.argv.length != 4 | process.argv.length != 2)){
     console.log('usage: node socket_client ip port will read test port from input');
     console.log('------ node socket_client.js will read test ports from configuration');
     return;
   }
+  var portsToTestFinal = [];
   if(process.argv.length == 4){
     serverIp = process.argv[2];
-    portsToTest = [process.argv[3]];
+    portsToTestFinal = portsToTestFinal.concat(getPortsFromString(process.argv[3]));
   }
-  var portsToTestFinal = [];
   if(process.argv.length == 2){
     for(var port of portsToTest){
-      if(port.includes('-')){
-        var newPorts = getPortsFromString(port);        
-        portsToTestFinal = portsToTestFinal.concat(newPorts);
-      } else {
-        portsToTestFinal.push(port);
-      }
+      portsToTestFinal = portsToTestFinal.concat(getPortsFromString(port));
     }
   }
   connectServerPort(serverIp, serverPort, portsToTestFinal); 
 }
 
+/**
+ * 
+ * @param {*string} stringToConvert 
+ */
 function getPortsFromString(stringToConvert){
-  var tmp = stringToConvert.split('-');
-  var start = Number.parseInt(tmp[0]);
-  var end = Number.parseInt(tmp[1]);
+  var tmp;
+  var start;
+  var end;
   var ports = [];
-  if(start > end){
-    var foo = start;
-    start = end;
-    end = foo;
+  if(stringToConvert.includes('-')){
+    tmp = stringToConvert.split('-');
+    start = Number.parseInt(tmp[0]);
+    end = Number.parseInt(tmp[1]);
+  } else {
+    start = Number.parseInt(stringToConvert);
+    end = start + 1;
   }
+  if(start > end){
+      var foo = start;
+      start = end;
+      end = foo;
+    }
   if(start > 65536){
     return ports;
   }
   if(isNaN(start) || isNaN(end)){
     return ports;
   }
+  if(end > 65536){
+    end = 65535;
+  } 
   for(let i = start; i < end; i++){
     ports.push(i + '');
   }
@@ -61,8 +70,12 @@ function connectServerPort(ip, port, portsToTest){
   client.connect(port, ip, () => {
     if(portsToTest.length > 0){
       client.write(portsToTest[0]);
+    } else {
+      console.log('Please make sure you have input correct port'.red);
+      client.destroy();
     }
   });
+
   client.on('data', (data) => {
     if(data.toString('utf8') == "established"){
       connectTestPort(ip, portsToTest[counter]).then(() => {
@@ -77,6 +90,7 @@ function connectServerPort(ip, port, portsToTest){
   });
   
   client.on('timeout', () => {
+    console.log('server port'.red);
     console.log('port', port.red, 'on host', ip.yellow, 'connection timeout');
     client.destroy();
   });
